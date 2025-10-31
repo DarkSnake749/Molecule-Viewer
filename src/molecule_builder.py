@@ -1,5 +1,13 @@
 from utils import *
 
+# TODO: Show the molecule
+# TODO: change the reset list name
+# TODO: Debug
+
+# TODO: Move, rotate, scale function
+# TODO: Keyboard input
+# TODO: UI (win size, input box)
+
 class Molecule:
     def __init__(self, render, smiles):
         self.render = render
