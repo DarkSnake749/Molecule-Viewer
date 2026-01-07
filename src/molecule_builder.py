@@ -48,8 +48,6 @@ class Molecule:
 
     def build_molecule(
         self,
-        atom_radii=None,
-        atom_colors=None,
         bond_radius=0.08,
         bond_color=(0.6, 0.6, 0.6, 1)
     ):
