@@ -1,3 +1,6 @@
+import math
+import numpy as np
+
 from math import sin, cos, pi
 from panda3d.core import (
     GeomVertexFormat, GeomVertexData, Geom, GeomTriangles, GeomNode,
@@ -6,8 +9,6 @@ from panda3d.core import (
 
 from rdkit import Chem
 from rdkit.Chem import AllChem
-
-
 
 # * 3d functions
 
@@ -194,6 +195,8 @@ def update_shape_color(shape, color):
 
 # * Chem function
 
+DEFAULT_RADIUS = 1.0
+
 COVALENT_RADII = {
     "H": 0.31, "He": 0.28,
     "Li": 1.28, "Be": 0.96, "B": 0.84, "C": 0.76, "N": 0.71, "O": 0.66, "F": 0.57, "Ne": 0.58,
@@ -278,28 +281,44 @@ CPK_COLORS = {
     "Og": (1.0, 0.41, 0.71, 1.0)
 }
 
-def smiles_to_3d_data(smiles: str):
-    # Generated with ChatGPT 5.0
-
+def covalent_to_visual_radius(
+    element: str,
+    COVALENT_RADII: dict,
+    scale: float = 0.25,
+    min_radius: float = 0.2,
+    max_radius: float = 0.6
+) -> float:
     """
-    Convert SMILES to 3D structured data with element, position, and radius.
+    Convert covalent radius (Å) to a visually suitable radius.
+    """
 
-    Parameters
-    ----------
-    smiles : str
-        Input SMILES string
-    use_vdw : bool
-        If True, use van der Waals radii instead of covalent ones
+    r = COVALENT_RADII.get(element)
+
+    if r is None:
+        return 0.2  # safe fallback
+
+    r *= scale
+
+    # Clamp to keep visuals clean
+    return max(min_radius, min(max_radius, r))
+
+def smiles_to_3d_molecule(smiles: str):
+    """
+    Generate 3D atom positions and real bond information from a SMILES string.
+
+    Returns:
+        atoms: list of dict {pos: (x,y,z), element: str}
+        bonds: list of dict {a: int, b: int, order: int}
     """
     mol = Chem.MolFromSmiles(smiles)
     if mol is None:
-        raise ValueError(f"Invalid SMILES: {smiles}")
+        raise ValueError("Invalid SMILES string")
 
     mol = Chem.AddHs(mol)
-    params = AllChem.ETKDGv3()
-    params.randomSeed = 0xf00d
-    if AllChem.EmbedMolecule(mol, params) != 0:
+
+    if AllChem.EmbedMolecule(mol, AllChem.ETKDG()) != 0:
         raise RuntimeError("3D embedding failed")
+
     AllChem.UFFOptimizeMolecule(mol)
 
     conf = mol.GetConformer()
@@ -307,23 +326,17 @@ def smiles_to_3d_data(smiles: str):
     atoms = []
     for atom in mol.GetAtoms():
         pos = conf.GetAtomPosition(atom.GetIdx())
-        elem = atom.GetSymbol()
-        radius = COVALENT_RADII.get(elem, 1.0)  # fallback radius
-        color = CPK_COLORS.get(elem, (0, 0, 0, 1)) # fallback color
         atoms.append({
-            "element": elem,
-            "x": pos.x,
-            "y": pos.y,
-            "z": pos.z,
-            "radius": radius
+            "pos": (pos.x, pos.y, pos.z),
+            "element": atom.GetSymbol()
         })
 
     bonds = []
     for bond in mol.GetBonds():
         bonds.append({
-            "start": bond.GetBeginAtomIdx(),
-            "end": bond.GetEndAtomIdx(),
-            "order": bond.GetBondTypeAsDouble()
+            "a": bond.GetBeginAtomIdx(),
+            "b": bond.GetEndAtomIdx(),
+            "order": int(bond.GetBondTypeAsDouble())
         })
 
-    return {"atoms": atoms, "bonds": bonds}
+    return atoms, bonds
