@@ -4,19 +4,11 @@ import itertools
 
 from utils import *
 
-# TODO: Show the molecule
-# TODO: change the reset list name
-# TODO: Debug
-
-# TODO: Move, rotate, scale function
-# TODO: Keyboard input
-# TODO: UI (win size, input box)
-
 class Molecule:
-    def __init__(self, render, smiles):
+    def __init__(self, render, smiles, id="molecule"):
         self.render = render
         self.atoms, self.bonds = smiles_to_3d_molecule(smiles)
-        self.root = NodePath("molecule")
+        self.root = NodePath(id)
         self.root.reparent_to(render)
     
     def draw_bond(self, start, end, order, radius, color):
@@ -39,7 +31,7 @@ class Molecule:
         for offset in offsets:
             shift = perp * offset
             make_cylinder(
-                self.render,
+                self.root,
                 start=start + shift,
                 end=end + shift,
                 radius=radius,
@@ -64,7 +56,7 @@ class Molecule:
             color = CPK_COLORS.get(element, (0.7, 0.7, 0.7, 1))
 
             sphere = make_sphere(
-                self.render,
+                self.root,
                 radius=radius,
                 color=color
             )
@@ -79,4 +71,13 @@ class Molecule:
                 radius=bond_radius,
                 color=bond_color
             )
+    
+    def set_rotation(self, heading=0, pitch=0, roll=0):
+        self.root.setHpr(heading, pitch, roll)
+    
+    def set_scale(self, scale=1):
+        self.root.setScale(scale)
+    
+    def set_pos(self, x, y, z):
+        self.root.setPos(x, y, z)
         

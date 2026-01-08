@@ -191,8 +191,6 @@ def update_shape_color(shape, color):
         shape.set_transparency(TransparencyAttrib.M_alpha)
         shape.set_depth_write(False) # Helps avoid z-sorting artifacts
 
-
-
 # * Chem function
 
 DEFAULT_RADIUS = 1.0

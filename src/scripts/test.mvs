@@ -1,0 +1,3 @@
+# Is a comment, must ignore
+new mol test-mol "CCO"
+new tex test-text "Hello, World!"
