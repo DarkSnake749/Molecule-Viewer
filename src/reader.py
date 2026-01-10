@@ -226,15 +226,15 @@ class MVReader:
                     self.loader
                 )
 
-                update_shape_color(self.text[line[1]], line[3])
+                update_shape_color(self.text[line[1]].root, line[3])
+                self.text[line[1]].set_position(0, 20, 2)
+        
+        self.build()
+    
+    # * Build each elements
+    def build(self):
+        for mol in self.molecule:
+            self.molecule[mol].build_molecule()
 
     def __str__(self):
         return str(self.file_content)
-    
-def main():
-    l = MVReader("scripts/test.mvs")
-    l.analyze()
-    l.execute()
-
-if __name__ == '__main__':
-    main()
