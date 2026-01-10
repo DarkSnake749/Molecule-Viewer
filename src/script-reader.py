@@ -1,5 +1,9 @@
 from panda3d.core import Vec3
 
+from utils import *
+from molecule import *
+from text import *
+
 def list_to_str(_list) -> str:
     r_str = ""
     for c in _list:
@@ -23,7 +27,9 @@ class Syntax:
     }
 
 class MVReader:
-    def __init__(self, file_path):
+    def __init__(self, render, loader, file_path):
+        self.render = render
+        self.loader = loader
         self.path = file_path
         self.file_content = self.read_file()
         self.trim_content = self.trim()
@@ -198,8 +204,29 @@ class MVReader:
             else:
                 raise SyntaxError(f"{token_line[0]} is not a valid action")
         
-        if new_token_line != None: 
-            self.parse_content.append(new_token_line)
+            if new_token_line != None: 
+                self.parse_content.append(new_token_line)
+    
+    # * Execute the script
+    def execute(self):
+        for line in self.parse_content:
+            if line[0] == Syntax.act_def['molecule']:
+                self.molecule[line[1]] = Molecule(
+                    self.render,
+                    line[2],
+                    line[1]
+                )
+
+                self.molecule[line[1]].set_pos(line[3].x, line[3].y, line[3].z)
+            elif line[0] == Syntax.act_def["text"]:
+                self.text[line[1]] = Text3D(
+                    self.render,
+                    line[1],
+                    line[2],
+                    self.loader
+                )
+
+                update_shape_color(self.text[line[1]], line[3])
 
     def __str__(self):
         return str(self.file_content)
@@ -207,7 +234,7 @@ class MVReader:
 def main():
     l = MVReader("scripts/test.mvs")
     l.analyze()
-    print(l.parse_content)
+    l.execute()
 
 if __name__ == '__main__':
     main()
