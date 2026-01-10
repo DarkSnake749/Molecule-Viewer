@@ -238,3 +238,7 @@ class MVReader:
 
     def __str__(self):
         return str(self.file_content)
+
+# TODO: Simple function for text and molecule
+# TODO: Camera positioning
+# TODO: Camera transition
