@@ -1,4 +1,4 @@
-from panda3d.core import Vec3
+from panda3d.core import Vec3, Material, CullFaceAttrib
 import math
 import itertools
 
@@ -63,6 +63,18 @@ class Molecule:
                 color=color
             )
             sphere.set_pos(pos)
+            mat = Material()
+            mat.setShininess(80.0)
+            mat.setSpecular((1, 1, 1, 1))
+
+            sphere.setMaterial(mat)
+            sphere.setShader(SHADER)
+
+            outline = sphere.copy_to(sphere.get_parent())
+            outline.setScale(1.08)
+            outline.setColor(0,0,0,1)
+            outline.setAttrib(CullFaceAttrib.make(CullFaceAttrib.MCullCounterClockwise))
+            outline.setLightOff()
 
         # ---- Draw bonds ----
         for bond in self.bonds:
