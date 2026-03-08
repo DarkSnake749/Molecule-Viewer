@@ -3,7 +3,6 @@ from direct.showbase.ShowBase import ShowBase
 from camera import *
 from molecule import *
 from text import *
-from reader import *
 
 class App(ShowBase):
     def __init__(self):
@@ -12,9 +11,12 @@ class App(ShowBase):
         # Disable the camera trackball controls.
         self.disableMouse()
 
-        self.reader = MVReader(self.render, self.loader, "scripts/test.mvs")
-        self.reader.analyze()
-        self.reader.execute()
+        mol = Molecule(
+            self.render,
+            "[Ag+].[N+](=O)([O-])[O-]",
+        )
+        mol.build_molecule()
+        mol.set_pos(0, 20, 0)
 
         self.custom_cam = Camera(self)
 
