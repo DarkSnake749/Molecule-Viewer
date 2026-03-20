@@ -94,4 +94,7 @@ class Molecule:
     
     def set_pos(self, x, y, z):
         self.root.setPos(x, y, z)
+    
+    def get_rot(self):
+        return self.root.getHpr()
         
