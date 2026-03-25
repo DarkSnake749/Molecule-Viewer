@@ -172,6 +172,7 @@ class App(ShowBase):
         self.accept("mouse3", self.back)
 
         self.accept("m", self.test_mol)
+        self.accept("mouse2", self.test_mol)
 
         return task.cont
 
