@@ -48,6 +48,13 @@ class App(ShowBase):
             self.water1, self.water2, self.oxygen, self.hydrogen,
             self.methane, self.water3, self.monox, self.hydro1, self.hydro2, self.hydro3
         ]
+
+        self.show = [
+            (5, 20, 0.75), 
+            (7.5, 20, -15.5),
+        ]
+        self.show_idx = 0
+
         self.rotation_speed = 0.15
         self.custom_cam = Camera(self)
         self.setup_lighting()
@@ -58,6 +65,7 @@ class App(ShowBase):
         taskMgr.add(self.update_shader, "shader-update")
 
         taskMgr.add(self.update_rotation, "rotation-update")
+        taskMgr.add(self.update_show, "rotation-update")
 
         #self.render.ls()
     
@@ -111,37 +119,55 @@ class App(ShowBase):
 
     def setupt_reaction_2(self):
         self.methane.build_molecule()
-        self.methane.set_pos(0, 20, -10)
+        self.methane.set_pos(0, 20, -15)
 
         plus1 = Text3D(self.render, "React2_plus1", "+", self.loader)
-        plus1.set_position(2.5, 20, -10.5)
+        plus1.set_position(2.5, 20, -15.5)
 
         self.water3.build_molecule()
-        self.water3.set_pos(5, 20, -10)
+        self.water3.set_pos(5, 20, -15)
 
         to = Text3D(self.render, "React2_to", ">", self.loader)
-        to.set_position(7.5, 20, -10.5)
+        to.set_position(7.5, 20, -15.5)
 
         self.monox.build_molecule()
-        self.monox.set_pos(10, 20, -10)
+        self.monox.set_pos(10, 20, -15)
 
         plus2 = Text3D(self.render, "React2_plus2", "+", self.loader)
-        plus2.set_position(12.5, 20, -10.5)
+        plus2.set_position(12.5, 20, -15.5)
 
         self.hydro1.build_molecule()
-        self.hydro1.set_pos(15, 20, -8)
+        self.hydro1.set_pos(15, 20, -13)
         self.hydro2.build_molecule()
-        self.hydro2.set_pos(15, 20, -10)
+        self.hydro2.set_pos(15, 20, -15)
         self.hydro3.build_molecule()
-        self.hydro3.set_pos(15, 20, -12)
+        self.hydro3.set_pos(15, 20, -17)
 
         title = Text3D(self.render, "Title2", "Réaction pour l'hydrogène gris", self.loader)
-        title.set_position(7, 20, -6)
+        title.set_position(7, 20, -11)
     
     def update_rotation(self, task):
         for i, mol in enumerate(self.all_molecule):
             h, p, r = mol.get_rot()
             self.all_molecule[i].set_rotation(h + self.rotation_speed, p + self.rotation_speed, r + self.rotation_speed)
+        return task.cont
+    
+    def on_n(self):
+        self.show_idx = self.show_idx + 1 if self.show_idx < len(self.show)-1 else 0
+        self.update_cam_pos()
+
+    def on_b(self):
+        self.show_idx = self.show_idx - 1 if self.show_idx > 0 else len(self.show)-1
+        self.update_cam_pos()
+
+    def update_cam_pos(self):
+        idx = self.show_idx
+        self.custom_cam.camera.setPos(self.show[idx][0], -7, self.show[idx][2])
+        self.custom_cam.camera.lookAt(self.show[idx][0], self.show[idx][1], self.show[idx][2])
+
+    def update_show(self, task):
+        self.accept("n", self.on_n)
+        self.accept("b", self.on_b)
         return task.cont
 
 def main():
