@@ -26,17 +26,24 @@ class App(ShowBase):
         self.hydro2 = Molecule(self.render, "[H][H]")
         self.hydro3 = Molecule(self.render, "[H][H]")
 
+        # * Test Molecule
+        self.test = Molecule(self.render, "FC(CC(C(C1(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(CC2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)C2Cl)I)Cl)C1Br")
+        self.test.build_molecule()
+        self.test.set_pos(0, 20, 50)
+        
         self.setup_reaction_1()
         self.setupt_reaction_2()
 
         self.all_molecule = [
             self.water1, self.water2, self.oxygen, self.hydrogen,
-            self.methane, self.water3, self.monox, self.hydro1, self.hydro2, self.hydro3
+            self.methane, self.water3, self.monox, self.hydro1, self.hydro2, self.hydro3,
+            self.test
         ]
 
         self.show = [
             (0, 5, 20, 0.75), (1, 0, 20, 1), (1, 5, 20, 0.75), (1, 10, 20, 0.75),
-            (0, 7.5, 20, -15.5), (1, 0, 20, -15), (1, 5, 20, -15), (1, 10, 20, -15), (1, 15, 20, -15)
+            (0, 7.5, 20, -15.5), (1, 0, 20, -15), (1, 5, 20, -15), (1, 10, 20, -15), (1, 15, 20, -15),
+            (0, 0, 20, 50),
         ]
         self.show_idx = 0
 
@@ -140,11 +147,15 @@ class App(ShowBase):
         return task.cont
     
     def next(self):
-        self.show_idx = self.show_idx + 1 if self.show_idx < len(self.show)-1 else 0
+        self.show_idx = self.show_idx + 1 if self.show_idx < len(self.show)-2 else 0
         self.update_cam_pos()
 
     def back(self):
-        self.show_idx = self.show_idx - 1 if self.show_idx > 0 else len(self.show)-1
+        self.show_idx = self.show_idx - 1 if self.show_idx > 0 else len(self.show)-2
+        self.update_cam_pos()
+    
+    def test_mol(self):
+        self.show_idx = len(self.show)-1
         self.update_cam_pos()
 
     def update_cam_pos(self):
@@ -159,6 +170,8 @@ class App(ShowBase):
 
         self.accept("b", self.back)
         self.accept("mouse3", self.back)
+
+        self.accept("m", self.test_mol)
 
         return task.cont
 
