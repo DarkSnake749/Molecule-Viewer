@@ -12,21 +12,6 @@ class App(ShowBase):
         # Disable the camera trackball controls.
         self.disableMouse()
 
-        """
-        Test element
-
-        mol = Molecule(
-            self.render,
-            "[Ag+].[N+](=O)([O-])[O-]",
-        )
-        mol.build_molecule()
-        mol.set_pos(0, 20, 0)
-
-        text = Text3D(self.render, "Hi", "Hello, World", self.loader)
-        text.set_position(0, 20, 5)
-        
-        """
-
         # * Reaction #1
         self.water1 = Molecule(self.render, "O")
         self.water2 = Molecule(self.render, "O")
@@ -50,13 +35,15 @@ class App(ShowBase):
         ]
 
         self.show = [
-            (5, 20, 0.75), 
-            (7.5, 20, -15.5),
+            (0, 5, 20, 0.75), (1, 0, 20, 1), (1, 5, 20, 0.75), (1, 10, 20, 0.75),
+            (0, 7.5, 20, -15.5), (1, 0, 20, -15), (1, 5, 20, -15), (1, 10, 20, -15), (1, 15, 20, -15)
         ]
         self.show_idx = 0
 
         self.rotation_speed = 0.15
         self.custom_cam = Camera(self)
+        self.update_cam_pos()
+
         self.setup_lighting()
         self.setBackgroundColor(56/255, 52/255, 53/255)
         self.render.setShaderAuto()
@@ -152,22 +139,27 @@ class App(ShowBase):
             self.all_molecule[i].set_rotation(h + self.rotation_speed, p + self.rotation_speed, r + self.rotation_speed)
         return task.cont
     
-    def on_n(self):
+    def next(self):
         self.show_idx = self.show_idx + 1 if self.show_idx < len(self.show)-1 else 0
         self.update_cam_pos()
 
-    def on_b(self):
+    def back(self):
         self.show_idx = self.show_idx - 1 if self.show_idx > 0 else len(self.show)-1
         self.update_cam_pos()
 
     def update_cam_pos(self):
         idx = self.show_idx
-        self.custom_cam.camera.setPos(self.show[idx][0], -7, self.show[idx][2])
-        self.custom_cam.camera.lookAt(self.show[idx][0], self.show[idx][1], self.show[idx][2])
+        set_back = -7 if not self.show[idx][0] else 10
+        self.custom_cam.camera.setPos(self.show[idx][1], set_back, self.show[idx][3])
+        self.custom_cam.camera.lookAt(self.show[idx][1], self.show[idx][2], self.show[idx][3])
 
     def update_show(self, task):
-        self.accept("n", self.on_n)
-        self.accept("b", self.on_b)
+        self.accept("n", self.next)
+        self.accept("mouse1", self.next)
+
+        self.accept("b", self.back)
+        self.accept("mouse3", self.back)
+
         return task.cont
 
 def main():

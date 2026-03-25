@@ -1,3 +1,4 @@
 [Cool smiles molecule :)]
 
 1. FC(CC(C(C1(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(CC2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)C2Cl)I)Cl)C1Br
+2. [Ag+].[N+](=O)([O-])[O-]
