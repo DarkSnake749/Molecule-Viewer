@@ -28,21 +28,30 @@ class App(ShowBase):
         """
 
         # * Reaction #1
-        self.water1 = Molecule(self.render, "[H]O[H]")
-        self.water2 = Molecule(self.render, "[H]O[H]")
+        self.water1 = Molecule(self.render, "O")
+        self.water2 = Molecule(self.render, "O")
         self.oxygen = Molecule(self.render, "O=O")
         self.hydrogen = Molecule(self.render, "[H][H]")
 
+        # * Reaction #2
+        self.methane = Molecule(self.render, "C")
+        self.water3 = Molecule(self.render, "O")
+        self.monox = Molecule(self.render, "[C-]#[O+]")
+        self.hydro1 = Molecule(self.render, "[H][H]")
+        self.hydro2 = Molecule(self.render, "[H][H]")
+        self.hydro3 = Molecule(self.render, "[H][H]")
+
         self.setup_reaction_1()
+        self.setupt_reaction_2()
 
         self.all_molecule = [
             self.water1, self.water2, self.oxygen, self.hydrogen,
-
+            self.methane, self.water3, self.monox, self.hydro1, self.hydro2, self.hydro3
         ]
         self.rotation_speed = 0.15
         self.custom_cam = Camera(self)
         self.setup_lighting()
-        self.setBackgroundColor(0.8745, 0.9216, 0.9176)
+        self.setBackgroundColor(56/255, 52/255, 53/255)
         self.render.setShaderAuto()
 
         taskMgr.add(self.custom_cam.update, "camera-update")
@@ -97,13 +106,42 @@ class App(ShowBase):
         self.hydrogen.build_molecule()
         self.hydrogen.set_pos(10, 20, 0.75)
 
+        title = Text3D(self.render, "Title1", "Réaction pour l'hydrogène vert", self.loader)
+        title.set_position(5, 20, 4)
+
     def setupt_reaction_2(self):
-        pass
+        self.methane.build_molecule()
+        self.methane.set_pos(0, 20, -10)
+
+        plus1 = Text3D(self.render, "React2_plus1", "+", self.loader)
+        plus1.set_position(2.5, 20, -10.5)
+
+        self.water3.build_molecule()
+        self.water3.set_pos(5, 20, -10)
+
+        to = Text3D(self.render, "React2_to", ">", self.loader)
+        to.set_position(7.5, 20, -10.5)
+
+        self.monox.build_molecule()
+        self.monox.set_pos(10, 20, -10)
+
+        plus2 = Text3D(self.render, "React2_plus2", "+", self.loader)
+        plus2.set_position(12.5, 20, -10.5)
+
+        self.hydro1.build_molecule()
+        self.hydro1.set_pos(15, 20, -8)
+        self.hydro2.build_molecule()
+        self.hydro2.set_pos(15, 20, -10)
+        self.hydro3.build_molecule()
+        self.hydro3.set_pos(15, 20, -12)
+
+        title = Text3D(self.render, "Title2", "Réaction pour l'hydrogène gris", self.loader)
+        title.set_position(7, 20, -6)
     
     def update_rotation(self, task):
         for i, mol in enumerate(self.all_molecule):
             h, p, r = mol.get_rot()
-            self.all_molecule[i].set_rotation(h+self.rotation_speed, p+self.rotation_speed, r+self.rotation_speed)
+            self.all_molecule[i].set_rotation(h + self.rotation_speed, p + self.rotation_speed, r + self.rotation_speed)
         return task.cont
 
 def main():
