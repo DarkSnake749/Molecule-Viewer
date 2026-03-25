@@ -27,7 +27,7 @@ class App(ShowBase):
         self.hydro3 = Molecule(self.render, "[H][H]")
 
         # * Test Molecule
-        self.test = Molecule(self.render, "FC(CC(C(C1(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(CC2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)C2Cl)I)Cl)C1Br")
+        self.test = Molecule(self.render, "[Ba]=[Mn]/[Hf]=[Sm][Db]=[Ag](/[Tc]1)[Lv][Sb][Ir][Po]Br[Nb][Bi][Tm]/[Cd]=[Rf][Fm][Np]1([Nd])[Nh]")
         self.test.build_molecule()
         self.test.set_pos(0, 20, 50)
         

@@ -2,3 +2,5 @@
 
 1. FC(CC(C(C1(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(C(CC2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)(C2Cl)C2I)Br)F)C2Cl)I)Cl)C1Br
 2. [Ag+].[N+](=O)([O-])[O-]
+3. [H][Li]N(B(C(F)(Cl)Br)O[Na])C(=O)P(=S)(O[Mg])S[Al]C#N.[K+].[Ca++].[Fe+2].[Cu+].[Zn+2].[Ag+].[I-]
+4. [Ba]=[Mn]/[Hf]=[Sm][Db]=[Ag](/[Tc]1)[Lv][Sb][Ir][Po]Br[Nb][Bi][Tm]/[Cd]=[Rf][Fm][Np]1([Nd])[Nh]
