@@ -17,6 +17,7 @@ class App(ShowBase):
         self.water2 = Molecule(self.render, "O")
         self.oxygen = Molecule(self.render, "O=O")
         self.hydrogen = Molecule(self.render, "[H][H]")
+        self.hydro = Molecule(self.render, "[H][H]")
 
         # * Reaction #2
         self.methane = Molecule(self.render, "C")
@@ -35,7 +36,7 @@ class App(ShowBase):
         self.setupt_reaction_2()
 
         self.all_molecule = [
-            self.water1, self.water2, self.oxygen, self.hydrogen,
+            self.water1, self.water2, self.oxygen, self.hydrogen, self.hydro,
             self.methane, self.water3, self.monox, self.hydro1, self.hydro2, self.hydro3,
             self.test
         ]
@@ -106,7 +107,10 @@ class App(ShowBase):
         plus.set_position(7.5, 20, 0.5)
 
         self.hydrogen.build_molecule()
-        self.hydrogen.set_pos(10, 20, 0.75)
+        self.hydrogen.set_pos(10, 20, -0.25)
+
+        self.hydro.build_molecule()
+        self.hydro.set_pos(10, 20, 1.75)
 
         title = Text3D(self.render, "Title1", "Réaction pour l'hydrogène vert", self.loader)
         title.set_position(5, 20, 4)
